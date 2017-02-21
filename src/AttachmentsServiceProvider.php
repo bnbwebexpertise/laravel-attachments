@@ -2,6 +2,7 @@
 
 namespace Bnb\Laravel\Attachments;
 
+use Bnb\Laravel\Attachments\Console\Commands\CleanupAttachments;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
@@ -28,6 +29,12 @@ class AttachmentsServiceProvider extends ServiceProvider
 
         if (config('attachments.routes.publish')) {
             $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        }
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                CleanupAttachments::class,
+            ]);
         }
     }
 

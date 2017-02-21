@@ -84,6 +84,24 @@ $attachmentByKey = $user->attachment('myKey');
 $publicUrl = $attachmentByKey->url;
 ```
 
+## Delete an attachment
+
+Calling the `delete()` method on an attachment model instance will
+ delete the database row and the file. The deletion of the file can
+ be disabled by setting the `behaviors.cascade_delete` to `false` in
+ the configuration.
+
+> Not that calling `delete()` on a `query()` like statement will not
+ cascade to the filesystem because it will not call the `delete()`
+ method of the `Attachment` model class.
+
+```php
+$user = App\User::first();
+$attachmentByKey = $user->attachment('myKey');
+$attachmentByKey->delete(); // Will also delete the file on the storage by default
+```
+
+
 ## Hooking the file output
 
 The `Bnb\Laravel\Attachments\Attachment` model class provides
@@ -198,3 +216,14 @@ Route::post('/upload', function () {
     return redirect('/dropzone');
 });
 ```
+
+## Cleanup commands
+
+A command is provided to cleanup the attachments not bound to a model
+ (when `model_type` and `model_id` are `null`).
+
+    php artisan attachment:cleanup
+
+The `-s` (or `--since=[timeInMinutes]`) option can be set to specify
+ another time limit in minutes : only unbound files older than the
+ specified age will be deleted. This value is set to **1440** by default.
