@@ -24,6 +24,8 @@ class AttachmentsServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(__DIR__ . '/../migrations');
 
+        $this->loadTranslationsFrom(__DIR__.'/../translations', 'attachments');
+
         if (config('attachments.routes.publish')) {
             $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
         }

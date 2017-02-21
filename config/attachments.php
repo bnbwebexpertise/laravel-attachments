@@ -6,7 +6,8 @@ return [
     | Routes
     |--------------------------------------------------------------------------
     |
-    | Determine whether or not to automatically define attachements routes.
+    | Determine whether or not to automatically define attachments routes.
+    | Used for local storage only as other storage should define their public URL.
     |
     */
     'routes' => [
@@ -21,7 +22,7 @@ return [
     | Uuid
     |--------------------------------------------------------------------------
     |
-    | Attachement model uses an UUID column. You can define your own UUID
+    | Attachment model uses an UUID column. You can define your own UUID
     | generator here : a global function name or a static class method in the form :
     | App\Namespace\ClassName@method
     |

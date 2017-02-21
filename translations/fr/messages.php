@@ -1,7 +1,8 @@
 <?php
-/**
- * laravel
- *
- * @author    Jérémy GAULIN <jeremy@bnb.re>
- * @copyright 2017 - B&B Web Expertise
- */
+
+return [
+    'errors' => [
+        'access_denied' => 'Vous n’êtes pas autorisé à accéder à la ressource demandée.',
+        'not_found' => 'La ressource demandé est introuvable.',
+    ]
+];

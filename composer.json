@@ -1,6 +1,6 @@
 {
   "name": "bnbwebexpertise/laravel-attachments",
-  "description": "Laravel package to link file attachement to models",
+  "description": "Laravel package to link file attachment to models",
   "type": "package",
   "license": "MIT",
   "authors": [
@@ -12,7 +12,7 @@
   "minimum-stability": "stable",
   "require": {
     "php": ">=5.6.4",
-    "laravel/framework": "5.4.*"
+    "laravel/framework": ">=5.4.*"
   },
   "autoload": {
     "psr-4": {
