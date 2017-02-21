@@ -60,6 +60,14 @@ $attachment = $user->attach('local/path/to/file.txt');
 
 // Bind an uploaded file
 $attachment = $user->attach(\Request::file('uploaded_file'));
+
+// Bind an uploaded file with options
+$attachment = $user->attach(\Request::file('uploaded_file'), [
+    'disk' => 's3',
+    'title' => \Request::input('attachment_title'),
+    'description' => \Request::input('attachment_description'),
+    'key' => \Request::input('attachment_key'),
+]);
 ```
 
 ## Retrieve model's attachments
