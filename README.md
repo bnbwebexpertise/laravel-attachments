@@ -131,3 +131,70 @@ class AppServiceProvider extends ServiceProvider
     // ...
 }
 ```
+
+## Dropzone
+
+This package provides a server endpoint for [Dropzone.js](http://www.dropzonejs.com/)
+ via the `attachments.dropzone` route alias.
+
+It returns the attachment `uuid` along other fields as a JSON response.
+ This value can be sent back later to the server to bind it to a model
+ instance (deferred saving).
+
+The form :
+
+```html
+<form action="{{ route('attachments.dropzone')  }}" class="dropzone" id="my-dropzone">
+    {{ csrf_field() }}
+</form>
+```
+
+The response :
+
+```json
+{
+  "title": "b39ffd84524b",
+  "filename": "readme.md",
+  "filesize": 2906,
+  "filetype": "text\/html",
+  "uuid": "f5a8eec2-d860-4e53-8451-b39ffd84524b",
+  "key": "58ac52e90db938.72105394",
+  "url": "http:\/\/laravel.dev:8888\/attachments\/f5a8eec2-d860-4e53-8451-b39ffd84524b\/readme.md"
+}
+```
+
+Send it back later :
+
+```html
+<form action="/upload" method="post">
+    {{ csrf_field() }}
+    <input type="hidden" name="attachment_id" id="attachment_id">
+    <button type="submit">Save</button>
+</form>
+
+<!-- Where attachment_id is populated on success -->
+
+<script>
+    Dropzone.options.myDropzone = {
+        init: function () {
+            this.on("success", function (file, response) {
+                document.getElementById('attachment_id').value = response.id;
+            });
+        }
+    };
+</script>
+```
+
+Bind the value later :
+
+```php
+<?php
+
+Route::post('/upload', function () {
+    $model = App\User::first();
+
+    Bnb\Laravel\Attachments\Attachment::attach(Request::input('attachment_id'), $model);
+
+    return redirect('/dropzone');
+});
+```

@@ -47,6 +47,27 @@ class Attachment extends Model
      */
 
     /**
+     * Shortcut method to bind an attachment to a model
+     *
+     * @param string $uuid
+     * @param Model  $model a model that uses HasAttachment
+     *
+     * @return self|null
+     */
+    public static function attach($uuid, $model)
+    {
+        /** @var Attachment $attachment */
+        $attachment = self::where('uuid', $uuid)->first();
+
+        if ( ! $attachment) {
+            return null;
+        }
+
+        return $attachment->model()->associate($model)->save() ? $attachment : null;
+    }
+
+
+    /**
      * Creates a file object from a file an uploaded file.
      *
      * @param UploadedFile $uploadedFile
@@ -147,7 +168,7 @@ class Attachment extends Model
             }
 
             if (empty($attachment->key)) {
-                $attachment->key = $attachment->uuid;
+                $attachment->key = uniqid();
             }
         });
     }
@@ -165,7 +186,7 @@ class Attachment extends Model
             $generator = explode('@', $generator, 2);
         }
 
-        if (function_exists($generator)) {
+        if ( ! is_array($generator) && function_exists($generator)) {
             return $this->uuid = call_user_func($generator);
         }
 
