@@ -1,0 +1,22 @@
+{
+  "name": "bnbwebexpertise/laravel-attachments",
+  "description": "Laravel package to link file attachement to models",
+  "type": "package",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "BnB Web Expertise",
+      "email": "support@bnb.re"
+    }
+  ],
+  "minimum-stability": "stable",
+  "require": {
+    "php": ">=5.6.4",
+    "laravel/framework": "5.4.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Bnb\\Laravel\\Attachments\\": "src/"
+    }
+  }
+}
