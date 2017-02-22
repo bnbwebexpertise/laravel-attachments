@@ -174,7 +174,7 @@ class Attachment extends Model
     }
 
 
-    protected function getUuidAttribute()
+    public function getUuidAttribute()
     {
         if ( ! empty($this->attributes['uuid'])) {
             return $this->attributes['uuid'];
