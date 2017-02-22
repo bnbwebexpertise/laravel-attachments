@@ -27,7 +27,7 @@ return [
     | App\Namespace\ClassName@method
     |
     */
-    'uuid_provider' => '\Bnb\Laravel\Attachments\Uuid@v4',
+    'uuid_provider' => 'uuid_v4_base36',
 
     /*
     |--------------------------------------------------------------------------
