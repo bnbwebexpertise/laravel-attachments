@@ -4,7 +4,9 @@ return [
     'errors' => [
         'access_denied' => 'Access denied.',
         'not_found' => 'Not found.',
-        'upload_failed' => 'Upload has failed.'
+        'upload_failed' => 'Upload has failed.',
+        'upload_denied' => 'Upload has been denied.',
+        'delete_denied' => 'Resource deletion has been denied.',
     ],
     'console' => [
         'done' => 'Done!',

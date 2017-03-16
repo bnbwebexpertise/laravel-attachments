@@ -9,6 +9,11 @@ Route::group([
         ->where('name', '.+')
         ->name('attachments.download');
 
-    Route::post('dropzone', 'Bnb\Laravel\Attachments\Http\Controllers\UploadController@dropzone')
+    Route::post(config('attachments.routes.dropzone.upload_pattern'), 'Bnb\Laravel\Attachments\Http\Controllers\DropzoneController@post')
         ->name('attachments.dropzone');
+
+    Route::delete(config('attachments.routes.dropzone.delete_pattern'), 'Bnb\Laravel\Attachments\Http\Controllers\DropzoneController@delete')
+        ->where('id', '[a-zA-Z0-9-]+')
+        ->where('name', '.+')
+        ->name('attachments.dropzone.delete');
 });

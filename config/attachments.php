@@ -15,6 +15,10 @@ return [
         'prefix' => 'attachments',
         'middleware' => 'web',
         'pattern' => '/{id}/{name}',
+        'dropzone' => [
+            'upload_pattern' => '/dropzone',
+            'delete_pattern' => '/dropzone/{id}',
+        ]
     ],
 
     /*

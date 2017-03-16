@@ -5,6 +5,10 @@ This package allows to quickly links files to models.
 
 ## Installation
 
+You can install this package via composer :
+
+    composer require bnbwebexpertise/laravel-attachments
+
 Add the service provider to your configuration :
 
 ```php
