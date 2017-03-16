@@ -43,11 +43,11 @@ class CleanupAttachments extends Command
             $progress = $this->output->createProgressBar($count = $query->count());
 
             if ($count) {
-                $query->chunk(100, function ($attachements) use ($progress) {
-                    /** @var Collection $attachements */
-                    $attachements->each(function ($attachement) use ($progress) {
-                        /** @var Attachment $attachement */
-                        $attachement->delete();
+                $query->chunk(100, function ($attachments) use ($progress) {
+                    /** @var Collection $attachments */
+                    $attachments->each(function ($attachment) use ($progress) {
+                        /** @var Attachment $attachment */
+                        $attachment->delete();
 
                         $progress->advance();
                     });

@@ -13,19 +13,21 @@ class DropzoneController extends Controller
 
     public function post(Request $request)
     {
-        if (Event::dispatch('attachements.dropzone.uploading', [$request], true) === false) {
+        if (Event::dispatch('attachments.dropzone.uploading', [$request], true) === false) {
             return response(['status' => 403, 'message' => Lang::get('attachments::messages.errors.upload_denied')], 403);
         }
 
-        $attachment = (new Attachment(array_only($request->input(), [
+        $file = (new Attachment(array_only($request->input(), [
             'title',
             'description',
             'key'
         ])))
             ->fromPost($request->file($request->input('file_key', 'file')));
 
-        if ($attachment->save()) {
-            return array_only($attachment->toArray(), [
+        $file->metadata = ['dz_session_key' => csrf_token()];
+
+        if ($file->save()) {
+            return array_only($file->toArray(), [
                 'uuid',
                 'url',
                 'filename',
@@ -46,7 +48,17 @@ class DropzoneController extends Controller
         if ($file = Attachment::where('uuid', $id)->first()) {
             /** @var Attachment $file */
 
-            if (Event::dispatch('attachements.dropzone.deleting', [$request, $file], true) === false) {
+            if ($file->model_type || $file->model_id) {
+                return response(['status' => 422, 'message' => Lang::get('attachments::messages.errors.delete_denied')], 422);
+            }
+
+            if (filter_var(config('attachments.behaviors.dropzone_check_csrf'), FILTER_VALIDATE_BOOLEAN) &&
+                $file->metadata('dz_session_key') !== csrf_token()
+            ) {
+                return response(['status' => 401, 'message' => Lang::get('attachments::messages.errors.delete_denied')], 401);
+            }
+
+            if (Event::dispatch('attachments.dropzone.deleting', [$request, $file], true) === false) {
                 return response(['status' => 403, 'message' => Lang::get('attachments::messages.errors.delete_denied')], 403);
             }
 

@@ -63,6 +63,15 @@ class Attachment extends Model
             return null;
         }
 
+        // The dz_session_key is set by the build-in DropzoneController for security check
+        if ($attachment->metadata('dz_session_key')) {
+            $meta = $attachment->metadata;
+
+            unset($meta['dz_session_key']);
+
+            $attachment->metadata = $meta;
+        }
+
         return $attachment->model()->associate($model)->save() ? $attachment : null;
     }
 
@@ -265,6 +274,24 @@ class Attachment extends Model
     public function getContents()
     {
         return $this->storageCommand('get', $this->filepath);
+    }
+
+
+    /**
+     * Get a metadata value by key with dot notation
+     *
+     * @param string $key     The metadata key, supports dot notation
+     * @param mixed  $default The default value to return if key is not found
+     *
+     * @return array|mixed
+     */
+    public function metadata($key, $default = null)
+    {
+        if (is_null($key)) {
+            return $this->metadata;
+        }
+
+        return array_get($this->metadata, $key, $default);
     }
 
 

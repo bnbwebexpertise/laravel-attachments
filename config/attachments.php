@@ -40,9 +40,11 @@ return [
     |
     | Configurable behaviors :
     | - Concrete files can be delete when the database entry is deleted
+    | - Dropzone delete can check for CSRF token match (set on upload)
     |
     */
     'behaviors' => [
-        'cascade_delete' => true,
+        'cascade_delete' => env('ATTACHMENTS_CASCADE_DELETE', true),
+        'dropzone_check_csrf' => env('ATTACHMENTS_DROPZONE_CHECK_CSRF', true),
     ]
 ];
