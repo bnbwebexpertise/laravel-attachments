@@ -156,7 +156,10 @@ class AppServiceProvider extends ServiceProvider
 
 ## Dropzone
 
-This package provides a server endpoint for [Dropzone.js](http://www.dropzonejs.com/)
+
+### Upload
+
+This package provides a server endpoint for [Dropzone.js](http://www.dropzonejs.com/) or equivalent
  via the `attachments.dropzone` route alias.
 
 It returns the attachment `uuid` along other fields as a JSON response.
@@ -219,6 +222,59 @@ Route::post('/upload', function () {
 
     return redirect('/dropzone');
 });
+```
+
+### Delete
+
+The route `attachments.dropzone.delete` can be called via HTTP `DELETE`.
+ The attachment ID must be provided as parameter.
+
+The delete action provided by this route **only works for pending attachement**
+ (not bound to a model).
+
+To prevent deletion of other users file, the current CSRF token is saved
+ when uploading via the dropzone endpoint and it must be the same when
+ calling the dropzone delete endpoint. This behavior can be deactivated
+ via the configuration or env key (see [config/attachments.php](./config/attachments.php)).
+
+Usage example :
+
+```html
+<script>
+var MyDropzone = {
+    url: "{{ route('attachments.dropzone.delete', ['id' => ':id']) }}"
+    // ...
+    deletedfile: function (file) {
+        axios.delete(this.url.replace(/:id/, file.id)).then(function () {
+            //...
+        });
+    }
+    //...
+}
+</script>
+```
+
+### Events
+
+Two event are fired by the dropzone endpoints controller :
+
+- `attachments.dropzone.uploading` with the `$request : Request` as parameter
+- `attachments.dropzone.deleting` with the `$request : Request` and
+ the `$file : Attachement` as parameters
+
+If one of the listeners returns false, the action is aborted.
+
+```php
+public function boot()
+{
+    Event::listen('attachments.dropzone.uploading', function ($request) {
+        return $this->isAllowedToUploadFile($request);
+    });
+
+    Event::listen('attachments.dropzone.deleting', function ($request, $file) {
+        return $this->canDeletePendingFile($request, $file);
+    });
+}
 ```
 
 ## Cleanup commands
