@@ -90,11 +90,11 @@ class Attachment extends Model
             return null;
         }
 
+        $this->disk = $this->disk ?: ($disk ?: Storage::getDefaultDriver());
         $this->filename = $uploadedFile->getClientOriginalName();
         $this->filesize = $uploadedFile->getClientSize();
         $this->filetype = $uploadedFile->getMimeType();
         $this->filepath = $this->getStorageDirectory() . $this->getPartitionDirectory() . $this->getDiskName();
-        $this->disk = $this->disk ?: ($disk ?: Storage::getDefaultDriver());
         $this->putFile($uploadedFile->getRealPath(), $this->filepath);
 
         return $this;
@@ -116,11 +116,12 @@ class Attachment extends Model
         }
 
         $file = new FileObj($filePath);
+
+        $this->disk = $this->disk ?: ($disk ?: Storage::getDefaultDriver());
         $this->filename = $file->getFilename();
         $this->filesize = $file->getSize();
         $this->filetype = $file->getMimeType();
         $this->filepath = $this->getStorageDirectory() . $this->getPartitionDirectory() . $this->getDiskName();
-        $this->disk = $this->disk ?: ($disk ?: Storage::getDefaultDriver());
         $this->putFile($file->getRealPath(), $this->filepath);
 
         return $this;

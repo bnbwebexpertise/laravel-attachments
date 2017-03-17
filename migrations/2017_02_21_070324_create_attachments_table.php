@@ -20,7 +20,7 @@ class CreateAttachmentsTable extends Migration
             $table->string('disk', 32);
             $table->string('filepath', 512);
             $table->string('filename', 255);
-            $table->string('filetype', 64);
+            $table->string('filetype', 512);
             $table->unsignedInteger('filesize');
             $table->string('key', 64)->nullable();
             $table->string('title', 92)->nullable();

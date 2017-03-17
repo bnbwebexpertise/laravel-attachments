@@ -44,6 +44,10 @@ trait HasAttachment
             throw new \Exception('Attachment options must be an array');
         }
 
+        if(empty($fileOrPath)) {
+            throw new \Exception('Attached file is required');
+        }
+
         $options = array_only($options, ['title', 'description', 'key', 'disk']);
 
         if ( ! empty($options['key']) && $attachment = $this->attachment($options['key'])) {
