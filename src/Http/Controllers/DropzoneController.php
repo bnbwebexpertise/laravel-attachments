@@ -26,17 +26,21 @@ class DropzoneController extends Controller
 
         $file->metadata = ['dz_session_key' => csrf_token()];
 
-        if ($file->save()) {
-            return array_only($file->toArray(), [
-                'uuid',
-                'url',
-                'filename',
-                'filetype',
-                'filesize',
-                'title',
-                'description',
-                'key'
-            ]);
+        try {
+            if ($file->save()) {
+                return array_only($file->toArray(), [
+                    'uuid',
+                    'url',
+                    'filename',
+                    'filetype',
+                    'filesize',
+                    'title',
+                    'description',
+                    'key'
+                ]);
+            }
+        } catch (\Exception $e) {
+            \Log::error('Failed to upload attachment : ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
         }
 
         return response(['status' => 500, 'message' => Lang::get('attachments::messages.errors.upload_failed')], 500);
@@ -45,26 +49,32 @@ class DropzoneController extends Controller
 
     public function delete($id, Request $request)
     {
-        if ($file = Attachment::where('uuid', $id)->first()) {
-            /** @var Attachment $file */
+        try {
+            if ($file = Attachment::where('uuid', $id)->first()) {
+                /** @var Attachment $file */
 
-            if ($file->model_type || $file->model_id) {
-                return response(['status' => 422, 'message' => Lang::get('attachments::messages.errors.delete_denied')], 422);
+                if ($file->model_type || $file->model_id) {
+                    return response(['status' => 422, 'message' => Lang::get('attachments::messages.errors.delete_denied')], 422);
+                }
+
+                if (filter_var(config('attachments.behaviors.dropzone_check_csrf'), FILTER_VALIDATE_BOOLEAN) &&
+                    $file->metadata('dz_session_key') !== csrf_token()
+                ) {
+                    return response(['status' => 401, 'message' => Lang::get('attachments::messages.errors.delete_denied')], 401);
+                }
+
+                if (Event::dispatch('attachments.dropzone.deleting', [$request, $file], true) === false) {
+                    return response(['status' => 403, 'message' => Lang::get('attachments::messages.errors.delete_denied')], 403);
+                }
+
+                $file->delete();
             }
 
-            if (filter_var(config('attachments.behaviors.dropzone_check_csrf'), FILTER_VALIDATE_BOOLEAN) &&
-                $file->metadata('dz_session_key') !== csrf_token()
-            ) {
-                return response(['status' => 401, 'message' => Lang::get('attachments::messages.errors.delete_denied')], 401);
-            }
+            return response('', 204);
+        } catch (\Exception $e) {
+            \Log::error('Failed to delete attachment : ' . $e->getMessage(), ['id' => $id, 'trace' => $e->getTraceAsString()]);
 
-            if (Event::dispatch('attachments.dropzone.deleting', [$request, $file], true) === false) {
-                return response(['status' => 403, 'message' => Lang::get('attachments::messages.errors.delete_denied')], 403);
-            }
-
-            $file->delete();
+            response(['status' => 500, 'message' => Lang::get('attachments::messages.errors.delete_failed')], 500);
         }
-
-        return response('', 204);
     }
 }

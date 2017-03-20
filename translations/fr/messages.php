@@ -7,6 +7,7 @@ return [
         'upload_failed' => 'L’envoi de la ressource a échoué.',
         'upload_denied' => 'L’envoi de la ressource a été refusée.',
         'delete_denied' => 'La suppression de la ressource a été refusée.',
+        'delete_failed' => 'La suppression de la ressource a échoué',
     ],
     'console' => [
         'done' => 'Terminé !',
