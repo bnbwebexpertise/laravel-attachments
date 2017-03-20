@@ -4,9 +4,11 @@ namespace Bnb\Laravel\Attachments\Http\Controllers;
 
 use Bnb\Laravel\Attachments\Attachment;
 use Event;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Lang;
+use Log;
 
 class DropzoneController extends Controller
 {
@@ -39,8 +41,8 @@ class DropzoneController extends Controller
                     'key'
                 ]);
             }
-        } catch (\Exception $e) {
-            \Log::error('Failed to upload attachment : ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
+        } catch (Exception $e) {
+            Log::error('Failed to upload attachment : ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
         }
 
         return response(Lang::get('attachments::messages.errors.upload_failed'), 500);
@@ -71,8 +73,8 @@ class DropzoneController extends Controller
             }
 
             return response('', 204);
-        } catch (\Exception $e) {
-            \Log::error('Failed to delete attachment : ' . $e->getMessage(), ['id' => $id, 'trace' => $e->getTraceAsString()]);
+        } catch (Exception $e) {
+            Log::error('Failed to delete attachment : ' . $e->getMessage(), ['id' => $id, 'trace' => $e->getTraceAsString()]);
 
             response(Lang::get('attachments::messages.errors.delete_failed'), 500);
         }
