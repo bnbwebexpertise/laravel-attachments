@@ -14,7 +14,7 @@ class DropzoneController extends Controller
     public function post(Request $request)
     {
         if (Event::dispatch('attachments.dropzone.uploading', [$request], true) === false) {
-            return response(['status' => 403, 'message' => Lang::get('attachments::messages.errors.upload_denied')], 403);
+            return response(Lang::get('attachments::messages.errors.upload_denied'), 403);
         }
 
         $file = (new Attachment(array_only($request->input(), [
@@ -43,7 +43,7 @@ class DropzoneController extends Controller
             \Log::error('Failed to upload attachment : ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
         }
 
-        return response(['status' => 500, 'message' => Lang::get('attachments::messages.errors.upload_failed')], 500);
+        return response(Lang::get('attachments::messages.errors.upload_failed'), 500);
     }
 
 
@@ -54,17 +54,17 @@ class DropzoneController extends Controller
                 /** @var Attachment $file */
 
                 if ($file->model_type || $file->model_id) {
-                    return response(['status' => 422, 'message' => Lang::get('attachments::messages.errors.delete_denied')], 422);
+                    return response(Lang::get('attachments::messages.errors.delete_denied'), 422);
                 }
 
                 if (filter_var(config('attachments.behaviors.dropzone_check_csrf'), FILTER_VALIDATE_BOOLEAN) &&
                     $file->metadata('dz_session_key') !== csrf_token()
                 ) {
-                    return response(['status' => 401, 'message' => Lang::get('attachments::messages.errors.delete_denied')], 401);
+                    return response(Lang::get('attachments::messages.errors.delete_denied'), 401);
                 }
 
                 if (Event::dispatch('attachments.dropzone.deleting', [$request, $file], true) === false) {
-                    return response(['status' => 403, 'message' => Lang::get('attachments::messages.errors.delete_denied')], 403);
+                    return response(Lang::get('attachments::messages.errors.delete_denied'), 403);
                 }
 
                 $file->delete();
@@ -74,7 +74,7 @@ class DropzoneController extends Controller
         } catch (\Exception $e) {
             \Log::error('Failed to delete attachment : ' . $e->getMessage(), ['id' => $id, 'trace' => $e->getTraceAsString()]);
 
-            response(['status' => 500, 'message' => Lang::get('attachments::messages.errors.delete_failed')], 500);
+            response(Lang::get('attachments::messages.errors.delete_failed'), 500);
         }
     }
 }
