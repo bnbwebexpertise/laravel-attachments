@@ -54,7 +54,7 @@ class Attachment extends Model
      *
      * @return self|null
      */
-    public static function attach($uuid, $model)
+    public static function attach($uuid, $model, $options = [])
     {
         /** @var Attachment $attachment */
         $attachment = self::where('uuid', $uuid)->first();
@@ -72,6 +72,10 @@ class Attachment extends Model
             $attachment->metadata = $meta;
         }
 
+        $options = array_only($options, ['title', 'description', 'key', 'disk']);
+
+        $attachment->fill($options);
+        
         return $attachment->model()->associate($model)->save() ? $attachment : null;
     }
 
