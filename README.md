@@ -203,7 +203,7 @@ Send it back later :
     Dropzone.options.myDropzone = {
         init: function () {
             this.on("success", function (file, response) {
-                document.getElementById('attachment_id').value = response.id;
+                document.getElementById('attachment_id').value = response.uuid;
             });
         }
     };
