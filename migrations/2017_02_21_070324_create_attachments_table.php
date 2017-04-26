@@ -26,12 +26,10 @@ class CreateAttachmentsTable extends Migration
             $table->string('title', 92)->nullable();
             $table->text('description')->nullable();
             $table->string('preview_url', 512)->nullable();
-            $table->unsignedInteger('model_id')->nullable();
+            $table->unsignedInteger('model_id')->nullable()->index();
             $table->string('model_type', 512)->nullable();
             $table->longText('metadata')->nullable();
             $table->timestamps();
-
-            $table->index(['model_type', 'model_id'], 'idx_attachment_model');
         });
     }
 
