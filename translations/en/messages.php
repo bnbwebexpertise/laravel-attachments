@@ -4,6 +4,7 @@ return [
     'errors' => [
         'access_denied' => 'Access denied.',
         'not_found' => 'Not found.',
+        'expired' => 'The file is no longer available.',
         'upload_failed' => 'Upload has failed.',
         'upload_denied' => 'Upload has been denied.',
         'delete_denied' => 'Resource deletion has been denied.',
