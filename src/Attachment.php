@@ -378,7 +378,8 @@ class Attachment extends Model
 
         $payload = Crypt::encryptString(collect([
             'id' => $this->uuid,
-            'expire' => $expire->format('U'),
+            'expire' => $expire->getTimestamp(),
+            'shared_at' => Carbon::now()->getTimestamp()
         ])->toJson());
 
         return route('attachments.download-shared', ['token' => $payload]);

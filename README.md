@@ -277,6 +277,12 @@ public function boot()
 }
 ```
 
+## Temporary URLs
+It is possible to generate a unique temporary URL for downloading the attachments via the `getTemporaryUrl` method of the `Attachment` model, for sharing purposes foremost.  
+The `getTemporaryUrl` method has one parameter : a `Carbon` date, after which the link will no longer be valid.
+
+The default generated URL is of the form : `http://example.com/attachments/shared/<a very long string>`. The share path can be modified in the config file under the `shared_pattern` key.
+
 ## Cleanup commands
 
 A command is provided to cleanup the attachments not bound to a model
