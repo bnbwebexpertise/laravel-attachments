@@ -15,6 +15,7 @@ return [
         'prefix' => 'attachments',
         'middleware' => 'web',
         'pattern' => '/{id}/{name}',
+        'shared_pattern' =>  '/shared/{token}',
         'dropzone' => [
             'upload_pattern' => '/dropzone',
             'delete_pattern' => '/dropzone/{id}',

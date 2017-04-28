@@ -4,6 +4,7 @@ return [
     'errors' => [
         'access_denied' => 'Vous n’êtes pas autorisé à accéder à la ressource demandée.',
         'not_found' => 'La ressource demandé est introuvable.',
+        'expired' => 'Le fichier n’est plus disponible.',
         'upload_failed' => 'L’envoi de la ressource a échoué.',
         'upload_denied' => 'L’envoi de la ressource a été refusée.',
         'delete_denied' => 'La suppression de la ressource a été refusée.',

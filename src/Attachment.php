@@ -2,11 +2,13 @@
 
 namespace Bnb\Laravel\Attachments;
 
+use Carbon\Carbon;
 use File as FileHelper;
 use Illuminate\Database\Eloquent\Model;
 use Storage;
 use Symfony\Component\HttpFoundation\File\File as FileObj;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Crypt;
 
 /**
  * @property int    id
@@ -361,6 +363,27 @@ class Attachment extends Model
     public function getExtension()
     {
         return FileHelper::extension($this->filename);
+    }
+
+
+    /**
+     * Generate a temporary url at which the current file can be downloaded until $expire
+     *
+     * @param Carbon $expire
+     *
+     * @return string
+     */
+    public function getTemporaryUrl(Carbon $expire)
+    {
+
+        $payload = Crypt::encryptString(collect([
+            'id' => $this->uuid,
+            'expire' => $expire->getTimestamp(),
+            'shared_at' => Carbon::now()->getTimestamp()
+        ])->toJson());
+
+        return route('attachments.download-shared', ['token' => $payload]);
+
     }
 
 
