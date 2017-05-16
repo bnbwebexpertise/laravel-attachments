@@ -3,12 +3,12 @@
 namespace Bnb\Laravel\Attachments;
 
 use Carbon\Carbon;
+use Crypt;
 use File as FileHelper;
 use Illuminate\Database\Eloquent\Model;
 use Storage;
 use Symfony\Component\HttpFoundation\File\File as FileObj;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Crypt;
 
 /**
  * @property int    id
@@ -77,7 +77,7 @@ class Attachment extends Model
         $options = array_only($options, ['title', 'description', 'key', 'disk']);
 
         $attachment->fill($options);
-        
+
         return $attachment->model()->associate($model)->save() ? $attachment : null;
     }
 
@@ -506,7 +506,11 @@ class Attachment extends Model
                 return $path . '/' . $value;
             }, $args);
         } else {
-            $interface = 'Storage';
+            if (substr($filepath, 0, 1) !== '/') {
+                $args[0] = $filepath = '/' . $filepath;
+            }
+
+            $interface = Storage::disk($this->disk);
         }
 
         return forward_static_call_array([$interface, $command], $args);
