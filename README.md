@@ -293,3 +293,11 @@ A command is provided to cleanup the attachments not bound to a model
 The `-s` (or `--since=[timeInMinutes]`) option can be set to specify
  another time limit in minutes : only unbound files older than the
  specified age will be deleted. This value is set to **1440** by default.
+ 
+ 
+### Extends Attachment model columns
+
+The configuration defines the list of fillable attachment attributes in the `attachment.attributes` key.
+ 
+This allows you to create migration to add new columns in the attachment table 
+ and declare them in your published config at `config/attachments.php`.

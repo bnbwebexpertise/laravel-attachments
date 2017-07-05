@@ -74,7 +74,7 @@ class Attachment extends Model
             $attachment->metadata = $meta;
         }
 
-        $options = array_only($options, ['title', 'description', 'key', 'disk']);
+        $options = array_only($options, config('attachments.attributes'));
 
         $attachment->fill($options);
 
