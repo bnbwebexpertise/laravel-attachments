@@ -15,7 +15,7 @@ return [
         'prefix' => 'attachments',
         'middleware' => 'web',
         'pattern' => '/{id}/{name}',
-        'shared_pattern' =>  '/shared/{token}',
+        'shared_pattern' => '/shared/{token}',
         'dropzone' => [
             'upload_pattern' => '/dropzone',
             'delete_pattern' => '/dropzone/{id}',
@@ -47,5 +47,15 @@ return [
     'behaviors' => [
         'cascade_delete' => env('ATTACHMENTS_CASCADE_DELETE', true),
         'dropzone_check_csrf' => env('ATTACHMENTS_DROPZONE_CHECK_CSRF', true),
-    ]
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Declare the attachement model attributes
+    |--------------------------------------------------------------------------
+    |
+    | This allow to extend the attachment model with new columns
+    |
+    */
+    'attributes' => ['title', 'description', 'key', 'disk'],
 ];

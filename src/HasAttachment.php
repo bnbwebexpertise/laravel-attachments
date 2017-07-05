@@ -48,7 +48,7 @@ trait HasAttachment
             throw new \Exception('Attached file is required');
         }
 
-        $options = array_only($options, ['title', 'description', 'key', 'disk']);
+        $options = array_only($options, config('attachments.attributes'));
 
         if ( ! empty($options['key']) && $attachment = $this->attachment($options['key'])) {
             $attachment->delete();
