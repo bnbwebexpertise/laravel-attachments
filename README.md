@@ -301,3 +301,12 @@ The configuration defines the list of fillable attachment attributes in the `att
  
 This allows you to create migration to add new columns in the attachment table 
  and declare them in your published config at `config/attachments.php`.
+
+### Customize the attachment storage directory prefix
+
+You may easily customize the folder/prefix where new attachments are stored by either:
+
+* Adding an `.env` variable for `ATTACHMENTS_STORAGE_DIRECTORY_PREFIX` (recommended) OR
+* Change the configuration option `attachments.storage_directory.prefix` in `config/attachments.php`.
+
+The default value is `attachments` and any trailing `/`s will be trimmed automatically.

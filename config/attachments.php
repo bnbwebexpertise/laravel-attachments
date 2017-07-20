@@ -58,4 +58,16 @@ return [
     |
     */
     'attributes' => ['title', 'description', 'key', 'disk'],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Attachment Storage Directory
+    |--------------------------------------------------------------------------
+    |
+    | Defines the directory prefix where new attachment files are stored
+    |
+    */
+    'storage_directory' => [
+        'prefix' =>  rtrim(env('ATTACHMENTS_STORAGE_DIRECTORY_PREFIX', 'attachments'), '/'),
+    ],
 ];
