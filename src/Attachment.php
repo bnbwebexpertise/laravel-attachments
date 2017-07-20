@@ -404,7 +404,7 @@ class Attachment extends Model
      */
     protected function getStorageDirectory()
     {
-        return 'attachments/';
+        return config('attachments.storage_directory.prefix', 'attachments') . '/';
     }
 
 
