@@ -88,6 +88,26 @@ $attachmentByKey = $user->attachment('myKey');
 $publicUrl = $attachmentByKey->url;
 ```
 
+## Regroup model's attachments
+
+The `group` attribute allows to group attachements.
+The `attachementsGroup` method provided by the `HasAttachment` trait
+ returns all the attachments with the given `group` value.
+
+```php
+$user = App\User::first();
+
+$user->attach($somefile, ['
+    'group' => 'album',
+']);
+
+$user->attach($otherfile, ['
+    'group' => 'album',
+']);
+
+$attachmentsByGroup = $user->attachmentsGroup('album');
+```
+
 ## Delete an attachment
 
 Calling the `delete()` method on an attachment model instance will

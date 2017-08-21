@@ -21,6 +21,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @property string filetype
  * @property int    filesize
  * @property string key       must be unique across a model's attachments pool
+ * @property string group     allows to group attachments
  * @property string title
  * @property string description
  * @property string preview_url

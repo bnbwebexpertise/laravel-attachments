@@ -3,6 +3,7 @@
 namespace Bnb\Laravel\Attachments;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 trait HasAttachment
@@ -29,6 +30,18 @@ trait HasAttachment
     public function attachment($key)
     {
         return $this->attachments()->where('key', $key)->first();
+    }
+
+    /**
+     * Find all attachments with the given
+     *
+     * @param string $group
+     *
+     * @return Attachment[]|Collection
+     */
+    public function attachmentsGroup($group)
+    {
+        return $this->attachments()->where('group', $group)->get();
     }
 
 
