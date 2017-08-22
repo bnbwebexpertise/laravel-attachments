@@ -57,7 +57,7 @@ return [
     | This allow to extend the attachment model with new columns
     |
     */
-    'attributes' => ['title', 'description', 'key', 'disk'],
+    'attributes' => ['title', 'description', 'key', 'disk', 'group'],
 
     /*
     |--------------------------------------------------------------------------
