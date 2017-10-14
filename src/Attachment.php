@@ -54,8 +54,9 @@ class Attachment extends Model
      *
      * @param string $uuid
      * @param Model  $model a model that uses HasAttachment
+     * @param array  $options filter options based on configuration key `attachments.attributes`
      *
-     * @return self|null
+     * @return Attachment|null
      */
     public static function attach($uuid, $model, $options = [])
     {
@@ -328,7 +329,7 @@ class Attachment extends Model
             ! FileHelper::makeDirectory($destinationPath, 0777, true, true) &&
             ! FileHelper::isDirectory($destinationPath)
         ) {
-            trigger_error(error_get_last(), E_USER_WARNING);
+            trigger_error(error_get_last()['message'], E_USER_WARNING);
         }
 
         return FileHelper::copy($sourcePath, $destinationPath . basename($filePath));
@@ -434,7 +435,9 @@ class Attachment extends Model
     /**
      * Returns true if a directory contains no files.
      *
-     * @return boolean
+     * @param string|null $dir the directory path
+     *
+     * @return bool
      */
     protected function isDirectoryEmpty($dir)
     {
@@ -448,6 +451,11 @@ class Attachment extends Model
 
     /**
      * Copy the local file to Storage
+     *
+     * @param string $localPath
+     * @param string $storagePath
+     *
+     * @return bool
      */
     protected function copyToStorage($localPath, $storagePath)
     {
@@ -458,6 +466,8 @@ class Attachment extends Model
     /**
      * Checks if directory is empty then deletes it,
      * three levels up to match the partition directory.
+     *
+     * @param string|null $dir the directory path
      *
      * @return void
      */
@@ -492,6 +502,9 @@ class Attachment extends Model
      * This allows local storage outside the storage/app folder and is
      * also good for performance. For local storage, *every* argument
      * is prefixed with the local root path.
+     *
+     * @param string $string the command string
+     * @param string $filepath the path on storage
      *
      * @return mixed
      */

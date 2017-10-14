@@ -3,7 +3,6 @@
 namespace Bnb\Laravel\Attachments;
 
 use Bnb\Laravel\Attachments\Console\Commands\CleanupAttachments;
-use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider;
 
 class AttachmentsServiceProvider extends ServiceProvider
@@ -12,11 +11,9 @@ class AttachmentsServiceProvider extends ServiceProvider
     /**
      * Bootstrap the application services.
      *
-     * @param Router $router
-     *
      * @return void
      */
-    public function boot(Router $router)
+    public function boot()
     {
 
         $this->publishes([
@@ -47,11 +44,5 @@ class AttachmentsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/attachments.php', 'attachments');
-    }
-
-
-    private function routes($router)
-    {
-
     }
 }

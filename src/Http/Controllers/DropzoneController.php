@@ -76,7 +76,7 @@ class DropzoneController extends Controller
         } catch (Exception $e) {
             Log::error('Failed to delete attachment : ' . $e->getMessage(), ['id' => $id, 'trace' => $e->getTraceAsString()]);
 
-            response(Lang::get('attachments::messages.errors.delete_failed'), 500);
+            return response(Lang::get('attachments::messages.errors.delete_failed'), 500);
         }
     }
 }

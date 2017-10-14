@@ -17,14 +17,16 @@ class ShareController extends Controller
     {
         try {
             $data = json_decode(Crypt::decryptString($token));
-            $id = $data->id;
-            $expire = $data->expire;
-
-        } catch(DecryptException $e) {
+        } catch (DecryptException $e) {
             abort(404, Lang::get('attachments::messages.errors.file_not_found'));
+
+            return;
         }
 
-        if(Carbon::createFromTimestamp($expire)->isPast()) {
+        $id = $data->id;
+        $expire = $data->expire;
+
+        if (Carbon::createFromTimestamp($expire)->isPast()) {
             abort(403, Lang::get('attachments::messages.errors.expired'));
         }
 

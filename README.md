@@ -1,15 +1,24 @@
-# Laravel 5.4+ file attachment helpers
+# Laravel 5.5 file attachment helpers
 
 This package allows to quickly links files to models.
+
+> Can also be installed on Laravel 5.4, [see below](#older-laravel-54-install)
 
 
 ## Installation
 
-You can install this package via composer :
+You can install this package via composer. Laravel 5.5 auto discovers the service provider.
 
     composer require bnbwebexpertise/laravel-attachments
+ 
 
-Add the service provider to your configuration :
+### Older Laravel 5.4 install
+
+For 5.4 support install version 0.0.16 :
+
+    composer require bnbwebexpertise/laravel-attachments@0.0.16
+
+Then add the service provider to your configuration :
 
 ```php
 'providers' => [
@@ -20,7 +29,6 @@ Add the service provider to your configuration :
         // ...
 ],
 ```
-
 
 ## Configuration
 

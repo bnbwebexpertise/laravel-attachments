@@ -50,6 +50,7 @@ trait HasAttachment
      * @param array               $options Set attachment options : title, description, key, disk
      *
      * @return Attachment|null
+     * @throws \Exception
      */
     public function attach($fileOrPath, $options = [])
     {

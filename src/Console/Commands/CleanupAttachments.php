@@ -23,9 +23,9 @@ class CleanupAttachments extends Command
 
     public function __construct()
     {
-        $this->description = Lang::get('attachments::messages.console.cleanup_description');
-
         parent::__construct();
+
+        $this->setDescription(Lang::get('attachments::messages.console.cleanup_description'));
 
         $this->getDefinition()->addOption(new InputOption('since', '-s', InputOption::VALUE_OPTIONAL,
             Lang::get('attachments::messages.console.cleanup_option_since'), 1440));
