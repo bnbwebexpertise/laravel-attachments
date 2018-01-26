@@ -32,6 +32,7 @@ trait HasAttachment
         return $this->attachments()->where('key', $key)->first();
     }
 
+
     /**
      * Find all attachments with the given
      *
@@ -58,7 +59,7 @@ trait HasAttachment
             throw new \Exception('Attachment options must be an array');
         }
 
-        if(empty($fileOrPath)) {
+        if (empty($fileOrPath)) {
             throw new \Exception('Attached file is required');
         }
 
@@ -70,6 +71,7 @@ trait HasAttachment
 
         /** @var Attachment $attachment */
         $attachment = new Attachment($options);
+        $attachment->filepath = ! empty($options['filepath']) ? $options['filepath'] : null;
 
         if ($fileOrPath instanceof UploadedFile) {
             $attachment->fromPost($fileOrPath);
