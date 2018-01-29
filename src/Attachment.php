@@ -53,7 +53,7 @@ class Attachment extends Model
      * Shortcut method to bind an attachment to a model
      *
      * @param string $uuid
-     * @param Model  $model a model that uses HasAttachment
+     * @param Model  $model   a model that uses HasAttachment
      * @param array  $options filter options based on configuration key `attachments.attributes`
      *
      * @return Attachment|null
@@ -87,8 +87,8 @@ class Attachment extends Model
     /**
      * Creates a file object from a file an uploaded file.
      *
-     * @param UploadedFile $uploadedFile
-     * @param string       $disk target storage disk
+     * @param UploadedFile $uploadedFile source file
+     * @param string       $disk         target storage disk
      *
      * @return $this|null
      */
@@ -102,7 +102,7 @@ class Attachment extends Model
         $this->filename = $uploadedFile->getClientOriginalName();
         $this->filesize = $uploadedFile->getClientSize();
         $this->filetype = $uploadedFile->getMimeType();
-        $this->filepath = $this->getStorageDirectory() . $this->getPartitionDirectory() . $this->getDiskName();
+        $this->filepath = $this->filepath ?: ($this->getStorageDirectory() . $this->getPartitionDirectory() . $this->getDiskName());
         $this->putFile($uploadedFile->getRealPath(), $this->filepath);
 
         return $this;
@@ -112,8 +112,8 @@ class Attachment extends Model
     /**
      * Creates a file object from a file on the disk.
      *
-     * @param string $filePath
-     * @param string $disk target storage disk
+     * @param string $filePath source file
+     * @param string $disk     target storage disk
      *
      * @return $this|null
      */
@@ -129,7 +129,7 @@ class Attachment extends Model
         $this->filename = $file->getFilename();
         $this->filesize = $file->getSize();
         $this->filetype = $file->getMimeType();
-        $this->filepath = $this->getStorageDirectory() . $this->getPartitionDirectory() . $this->getDiskName();
+        $this->filepath = $this->filepath ?: ($this->getStorageDirectory() . $this->getPartitionDirectory() . $this->getDiskName());
         $this->putFile($file->getRealPath(), $this->filepath);
 
         return $this;
@@ -503,7 +503,7 @@ class Attachment extends Model
      * also good for performance. For local storage, *every* argument
      * is prefixed with the local root path.
      *
-     * @param string $string the command string
+     * @param string $string   the command string
      * @param string $filepath the path on storage
      *
      * @return mixed

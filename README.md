@@ -339,3 +339,14 @@ You may easily customize the folder/prefix where new attachments are stored by e
 * Change the configuration option `attachments.storage_directory.prefix` in `config/attachments.php`.
 
 The default value is `attachments` and any trailing `/`s will be trimmed automatically.
+
+### Customize the attachment storage filepath
+
+If you don't want to use the default storage filepath generation, you can provide the `filepath` option (relative to the root of storage disk).
+ It must contain the directory and filename. It's up to you to ensure that the provided filepath is not in conflict with another file.
+
+```php
+$model->attach('/foo/bar/pdf.pdf', ['filepath' => 'foo/bar/test.pdf']);
+```
+
+> This does not apply to attachments uploaded via the integrated DropZone controller. Only available for explicit attachments.
