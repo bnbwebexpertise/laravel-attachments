@@ -70,4 +70,16 @@ return [
     'storage_directory' => [
         'prefix' =>  rtrim(env('ATTACHMENTS_STORAGE_DIRECTORY_PREFIX', 'attachments'), '/'),
     ],
+
+    /*
+    |--------------------------------------------------------------------------
+    | Database configuration
+    |--------------------------------------------------------------------------
+    |
+    | Allows to set the database connection name for the module's models
+    |
+    */
+    'database' => [
+        'connection' =>  env('ATTACHMENTS_DATABASE_CONNECTION'),
+    ],
 ];

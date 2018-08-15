@@ -560,4 +560,9 @@ class Attachment extends Model
 
         return forward_static_call_array([$interface, $command], $args);
     }
+
+    public function getConnectionName()
+    {
+        return config('attachments.database.connection') ?? $this->connection;
+    }
 }

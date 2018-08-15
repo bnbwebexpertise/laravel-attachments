@@ -323,6 +323,13 @@ The `-s` (or `--since=[timeInMinutes]`) option can be set to specify
  specified age will be deleted. This value is set to **1440** by default.
  
 ## Customization
+
+### Set a custom database connection name for the models
+
+You can customize the database connection name by either :
+
+* Adding an `.env` variable for `ATTACHMENTS_DATABASE_CONNECTION` (recommended) OR
+* Changing the configuration option `attachments.database.connection` in `config/attachments.php`.
  
 ### Extends Attachment model columns
 
@@ -336,7 +343,7 @@ This allows you to create migration to add new columns in the attachment table
 You may easily customize the folder/prefix where new attachments are stored by either:
 
 * Adding an `.env` variable for `ATTACHMENTS_STORAGE_DIRECTORY_PREFIX` (recommended) OR
-* Change the configuration option `attachments.storage_directory.prefix` in `config/attachments.php`.
+* Changing the configuration option `attachments.storage_directory.prefix` in `config/attachments.php`.
 
 The default value is `attachments` and any trailing `/`s will be trimmed automatically.
 
