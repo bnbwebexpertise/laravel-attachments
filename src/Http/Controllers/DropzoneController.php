@@ -19,27 +19,14 @@ class DropzoneController extends Controller
             return response(Lang::get('attachments::messages.errors.upload_denied'), 403);
         }
 
-        $file = (new Attachment(array_only($request->input(), [
-            'title',
-            'description',
-            'key'
-        ])))
+        $file = (new Attachment(array_only($request->input(), config('attachments.attributes'))))
             ->fromPost($request->file($request->input('file_key', 'file')));
 
         $file->metadata = ['dz_session_key' => csrf_token()];
 
         try {
             if ($file->save()) {
-                return array_only($file->toArray(), [
-                    'uuid',
-                    'url',
-                    'filename',
-                    'filetype',
-                    'filesize',
-                    'title',
-                    'description',
-                    'key'
-                ]);
+                return array_only($file->toArray(), config('attachments.dropzone_attributes'));
             }
         } catch (Exception $e) {
             Log::error('Failed to upload attachment : ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);

@@ -55,9 +55,12 @@ return [
     |--------------------------------------------------------------------------
     |
     | This allow to extend the attachment model with new columns
+    | `dropzone_attributes` holds the public fields returned after a successful upload via DropzoneController
     |
     */
     'attributes' => ['title', 'description', 'key', 'disk', 'filepath', 'group'],
+
+    'dropzone_attributes' => ['uuid', 'url', 'filename', 'filetype', 'filesize', 'title', 'description', 'key', 'group'],
 
     /*
     |--------------------------------------------------------------------------
