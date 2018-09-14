@@ -22,7 +22,8 @@ class DropzoneController extends Controller
         $file = (new Attachment(array_only($request->input(), [
             'title',
             'description',
-            'key'
+            'key',
+            'group',
         ])))
             ->fromPost($request->file($request->input('file_key', 'file')));
 
@@ -38,7 +39,8 @@ class DropzoneController extends Controller
                     'filesize',
                     'title',
                     'description',
-                    'key'
+                    'key',
+                    'group',
                 ]);
             }
         } catch (Exception $e) {
