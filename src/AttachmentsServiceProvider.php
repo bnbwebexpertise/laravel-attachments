@@ -44,5 +44,11 @@ class AttachmentsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/attachments.php', 'attachments');
+
+        // Bind Model to Interface
+        $this->app->bind(
+            \Bnb\Laravel\Attachments\Contracts\AttachmentContract::class,
+            \Bnb\Laravel\Attachments\Attachment::class
+        );
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Bnb\Laravel\Attachments\Http\Controllers;
 
-use Bnb\Laravel\Attachments\Attachment;
+use Bnb\Laravel\Attachments\Contracts\AttachmentContract;
 use Event;
 use Exception;
 use Illuminate\Http\Request;
@@ -12,6 +12,17 @@ use Log;
 
 class DropzoneController extends Controller
 {
+    /**
+     * Attachment model
+     *
+     * @var AttachmentContract
+     */
+    protected $model;
+
+    public function __construct(AttachmentContract $model)
+    {
+        $this->model = $model;
+    }
 
     public function post(Request $request)
     {
@@ -19,7 +30,13 @@ class DropzoneController extends Controller
             return response(Lang::get('attachments::messages.errors.upload_denied'), 403);
         }
 
-        $file = (new Attachment(array_only($request->input(), config('attachments.attributes'))))
+        $file = $this->model
+            ->fill(
+                array_only(
+                    $request->input(),
+                    config('attachments.attributes')
+                )
+            )
             ->fromPost($request->file($request->input('file_key', 'file')));
 
         $file->metadata = ['dz_session_key' => csrf_token()];
@@ -39,8 +56,8 @@ class DropzoneController extends Controller
     public function delete($id, Request $request)
     {
         try {
-            if ($file = Attachment::where('uuid', $id)->first()) {
-                /** @var Attachment $file */
+            if ($file = $this->model->where('uuid', $id)->first()) {
+                /** @var AttachmentContract $file */
 
                 if ($file->model_type || $file->model_id) {
                     return response(Lang::get('attachments::messages.errors.delete_denied'), 422);

@@ -2,16 +2,27 @@
 
 namespace Bnb\Laravel\Attachments\Http\Controllers;
 
-use Bnb\Laravel\Attachments\Attachment;
+use Bnb\Laravel\Attachments\Contracts\AttachmentContract;
 use Carbon\Carbon;
+use Crypt;
 use Illuminate\Contracts\Encryption\DecryptException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Lang;
-use Crypt;
 
 class ShareController extends Controller
 {
+    /**
+     * Attachment model
+     *
+     * @var AttachmentContract
+     */
+    protected $model;
+
+    public function __construct(AttachmentContract $model)
+    {
+        $this->model = $model;
+    }
 
     public function download($token, Request $request)
     {
@@ -32,8 +43,8 @@ class ShareController extends Controller
 
         $disposition = ($disposition = $request->input('disposition')) === 'inline' ? $disposition : 'attachment';
 
-        if ($file = Attachment::where('uuid', $id)->first()) {
-            /** @var Attachment $file */
+        if ($file = $this->model->where('uuid', $id)->first()) {
+            /** @var AttachmentContract $file */
             if ( ! $file->output($disposition)) {
                 abort(403, Lang::get('attachments::messages.errors.access_denied'));
             }
