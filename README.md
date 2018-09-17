@@ -357,3 +357,35 @@ $model->attach('/foo/bar/pdf.pdf', ['filepath' => 'foo/bar/test.pdf']);
 ```
 
 > This does not apply to attachments uploaded via the integrated DropZone controller. Only available for explicit attachments.
+
+### Extending the Attachment model class
+
+This can be helpful to add some relations to the attachment model.
+
+Create your own model that extends `Bnb\Laravel\Attachments\Attachment` :
+
+```php
+<?php
+namespace Foo\Models;
+
+MyAttachment extends Bnb\Laravel\Attachments\Attachment
+{
+    public function someCustomRelation() {
+        //
+    }
+}
+```
+
+Bind your model to the `Bnb\Laravel\Attachments\Contracts\AttachmentContract` interface in a service provider :
+
+```php
+    public function register()
+    {
+        // ...
+        $this->app->bind(
+            \Bnb\Laravel\Attachments\Contracts\AttachmentContract::class,
+            \Foo\Models\MyAttachment::class
+        );
+        // ...
+    }
+```
