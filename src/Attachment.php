@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 use Storage;
 use Symfony\Component\HttpFoundation\File\File as FileObj;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Bnb\Laravel\Attachments\Contracts\AttachmentContract;
 
 /**
  * @property int    id
@@ -32,7 +33,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *
  * @package   Bnb\Laravel\Attachments
  */
-class Attachment extends Model
+class Attachment extends Model implements AttachmentContract
 {
 
     protected $table = 'attachments';
