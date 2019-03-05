@@ -2,14 +2,16 @@
 
 namespace Bnb\Laravel\Attachments;
 
+use Bnb\Laravel\Attachments\Contracts\AttachmentContract;
 use Carbon\Carbon;
 use Crypt;
 use File as FileHelper;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Storage;
 use Symfony\Component\HttpFoundation\File\File as FileObj;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
-use Bnb\Laravel\Attachments\Contracts\AttachmentContract;
 
 /**
  * @property int    id
@@ -77,7 +79,7 @@ class Attachment extends Model implements AttachmentContract
             $attachment->metadata = $meta;
         }
 
-        $options = array_only($options, config('attachments.attributes'));
+        $options = Arr::only($options, config('attachments.attributes'));
 
         $attachment->fill($options);
 
@@ -268,8 +270,8 @@ class Attachment extends Model implements AttachmentContract
             return route('attachments.download', [
                 'id' => $this->uuid,
                 'name' => $extension ?
-                    str_slug(substr($this->filename, 0, -1 * strlen($this->extension) - 1)) . '.' . $this->extension :
-                    str_slug($this->filename)
+                    Str::slug(substr($this->filename, 0, -1 * strlen($this->extension) - 1)) . '.' . $this->extension :
+                    Str::slug($this->filename)
             ]);
         } else {
             return Storage::disk($this->disk)->url($this->filepath);
@@ -332,7 +334,7 @@ class Attachment extends Model implements AttachmentContract
             return $this->metadata;
         }
 
-        return array_get($this->metadata, $key, $default);
+        return Arr::get($this->metadata, $key, $default);
     }
 
 
