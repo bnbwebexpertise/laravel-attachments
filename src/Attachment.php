@@ -83,6 +83,10 @@ class Attachment extends Model implements AttachmentContract
 
         $attachment->fill($options);
 
+        if ($found = $model->attachments()->where('key', '=', $attachment->key)->first()) {
+            $found->delete();
+        }
+
         return $attachment->model()->associate($model)->save() ? $attachment : null;
     }
 
