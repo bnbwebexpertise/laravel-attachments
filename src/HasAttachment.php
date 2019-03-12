@@ -6,9 +6,6 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
-/**
- * @property Collection attachments
- */
 trait HasAttachment
 {
 
