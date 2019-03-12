@@ -6,6 +6,9 @@ use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * @property Collection attachments
+ */
 trait HasAttachment
 {
 
@@ -29,7 +32,7 @@ trait HasAttachment
      */
     public function attachment($key)
     {
-        return $this->attachments()->where('key', $key)->first();
+        return $this->attachments->where('key', $key)->first();
     }
 
 
@@ -42,7 +45,7 @@ trait HasAttachment
      */
     public function attachmentsGroup($group)
     {
-        return $this->attachments()->where('group', $group)->get();
+        return $this->attachments->where('group', $group);
     }
 
 
@@ -65,7 +68,7 @@ trait HasAttachment
 
         $attributes = array_only($options, config('attachments.attributes'));
 
-        if ( ! empty($attributes['key']) && $attachment = $this->attachment($attributes['key'])) {
+        if ( ! empty($attributes['key']) && $attachment = $this->attachments()->where('key', $attributes['key'])->first()) {
             $attachment->delete();
         }
 
