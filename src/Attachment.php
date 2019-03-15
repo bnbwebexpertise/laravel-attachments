@@ -107,7 +107,7 @@ class Attachment extends Model implements AttachmentContract
 
         $this->disk = $this->disk ?: ($disk ?: Storage::getDefaultDriver());
         $this->filename = $uploadedFile->getClientOriginalName();
-        $this->filesize = $uploadedFile->getClientSize();
+        $this->filesize = method_exists($uploadedFile, 'getSize') ? $uploadedFile->getSize() : $uploadedFile->getClientSize();
         $this->filetype = $uploadedFile->getMimeType();
         $this->filepath = $this->filepath ?: ($this->getStorageDirectory() . $this->getPartitionDirectory() . $this->getDiskName());
         $this->putFile($uploadedFile->getRealPath(), $this->filepath);
