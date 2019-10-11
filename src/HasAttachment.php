@@ -3,6 +3,7 @@
 namespace Bnb\Laravel\Attachments;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -63,7 +64,7 @@ trait HasAttachment
             throw new \Exception('Attached file is required');
         }
 
-        $attributes = array_only($options, config('attachments.attributes'));
+        $attributes = Arr::only($options, config('attachments.attributes'));
 
         if ( ! empty($attributes['key']) && $attachment = $this->attachments()->where('key', $attributes['key'])->first()) {
             $attachment->delete();
