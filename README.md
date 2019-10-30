@@ -378,6 +378,7 @@ class MyAttachment extends Bnb\Laravel\Attachments\Attachment
 }
 ```
 
+To configure your own model class you can use one of the following possibilities :
 - Publish the configuration and update the `attachment_model` value
 - Set the `ATTACHMENTS_MODEL` environment value
 - Bind your model to the `Bnb\Laravel\Attachments\Contracts\AttachmentContract` interface in a service provider
