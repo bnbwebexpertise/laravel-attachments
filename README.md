@@ -366,26 +366,54 @@ Create your own model that extends `Bnb\Laravel\Attachments\Attachment` :
 
 ```php
 <?php
-namespace Foo\Models;
+namespace App;
 
-MyAttachment extends Bnb\Laravel\Attachments\Attachment
+class MyAttachment extends Bnb\Laravel\Attachments\Attachment
 {
+    // ...
     public function someCustomRelation() {
-        //
+        // ...
     }
+    // ...
 }
 ```
 
-Bind your model to the `Bnb\Laravel\Attachments\Contracts\AttachmentContract` interface in a service provider :
+- Publish the configuration and update the `attachment_model` value
+- Set the `ATTACHMENTS_MODEL` environment value
+- Bind your model to the `Bnb\Laravel\Attachments\Contracts\AttachmentContract` interface in a service provider
+
+Examples :
 
 ```php
+<?php
+return [
+    // ...
+    'attachment_model' => \App\MyAttachment::class,
+    // ..
+];
+```
+
+```dotenv
+# ...
+ATTACHMENTS_MODEL=\App\MyAttachment
+# ...
+```
+
+```php
+<?php
+// ...
+
+class AppServiceProvider extends ServiceProvider {
+    // ...
     public function register()
     {
         // ...
         $this->app->bind(
             \Bnb\Laravel\Attachments\Contracts\AttachmentContract::class,
-            \Foo\Models\MyAttachment::class
+            \App\MyAttachment::class
         );
         // ...
     }
+    // ...
+}
 ```

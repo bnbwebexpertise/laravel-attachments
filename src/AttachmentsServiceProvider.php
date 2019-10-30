@@ -48,7 +48,7 @@ class AttachmentsServiceProvider extends ServiceProvider
         // Bind Model to Interface
         $this->app->bind(
             \Bnb\Laravel\Attachments\Contracts\AttachmentContract::class,
-            \Bnb\Laravel\Attachments\Attachment::class
+            $this->app['config']->get('attachments.attachment_model')
         );
     }
 }

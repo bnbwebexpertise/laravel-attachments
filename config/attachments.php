@@ -24,10 +24,20 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Model
+    |--------------------------------------------------------------------------
+    |
+    | Attachment model used
+    |
+    */
+    'attachment_model' => env('ATTACHMENTS_MODEL', \Bnb\Laravel\Attachments\Attachment::class),
+
+    /*
+    |--------------------------------------------------------------------------
     | Uuid
     |--------------------------------------------------------------------------
     |
-    | Attachment model uses an UUID column. You can define your own UUID
+    | Default attachment model uses an UUID column. You can define your own UUID
     | generator here : a global function name or a static class method in the form :
     | App\Namespace\ClassName@method
     |

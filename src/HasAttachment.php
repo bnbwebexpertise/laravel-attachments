@@ -2,6 +2,7 @@
 
 namespace Bnb\Laravel\Attachments;
 
+use Bnb\Laravel\Attachments\Contracts\AttachmentContract;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -17,7 +18,7 @@ trait HasAttachment
      */
     public function attachments()
     {
-        return $this->morphMany(Attachment::class, 'model');
+        return $this->morphMany(get_class(app(AttachmentContract::class)), 'model');
     }
 
 
@@ -71,7 +72,7 @@ trait HasAttachment
         }
 
         /** @var Attachment $attachment */
-        $attachment = new Attachment($attributes);
+        $attachment = app(AttachmentContract::class)->fill($attributes);
         $attachment->filepath = ! empty($attributes['filepath']) ? $attributes['filepath'] : null;
 
         if (is_resource($fileOrPath)) {

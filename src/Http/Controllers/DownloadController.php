@@ -2,7 +2,6 @@
 
 namespace Bnb\Laravel\Attachments\Http\Controllers;
 
-use Bnb\Laravel\Attachments\Attachment;
 use Bnb\Laravel\Attachments\Contracts\AttachmentContract;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -27,7 +26,7 @@ class DownloadController extends Controller
         $disposition = ($disposition = $request->input('disposition')) === 'inline' ? $disposition : 'attachment';
 
         if ($file = $this->model->where('uuid', $id)->first()) {
-            /** @var Attachment $file */
+            /** @var \Bnb\Laravel\Attachments\Attachment $file */
             if ( ! $file->output($disposition)) {
                 abort(403, Lang::get('attachments::messages.errors.access_denied'));
             }
