@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Lang;
 use Log;
+use Illuminate\Support\Arr;
 
 class DropzoneController extends Controller
 {
@@ -32,7 +33,7 @@ class DropzoneController extends Controller
 
         $file = $this->model
             ->fill(
-                array_only(
+                Arr::only(
                     $request->input(),
                     config('attachments.attributes')
                 )
@@ -43,7 +44,7 @@ class DropzoneController extends Controller
 
         try {
             if ($file->save()) {
-                return array_only($file->toArray(), config('attachments.dropzone_attributes'));
+                return Arr::only($file->toArray(), config('attachments.dropzone_attributes'));
             }
         } catch (Exception $e) {
             Log::error('Failed to upload attachment : ' . $e->getMessage(), ['trace' => $e->getTraceAsString()]);
