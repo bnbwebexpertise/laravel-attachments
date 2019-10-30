@@ -1,6 +1,7 @@
 # Laravel 5.x file attachment helpers
 
-This package allows to quickly links files to models.
+This package allows to quickly attach files to your models, 
+ retrievable by key, group name or using the Eloquent relationship.
 
 > Can also be installed on Laravel 5.4, [see below](#older-laravel-54-install)
 
