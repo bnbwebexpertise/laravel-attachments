@@ -1,6 +1,6 @@
 {
   "name": "bnbwebexpertise/laravel-attachments",
-  "description": "Laravel package to link file attachment to models",
+  "description": "Attach files to your models, retrievable by key, group name or using the Eloquent relationship.",
   "type": "package",
   "license": "MIT",
   "authors": [
