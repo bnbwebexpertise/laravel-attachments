@@ -282,6 +282,23 @@ class Attachment extends Model implements AttachmentContract
         }
     }
 
+    public function getUrlInlineAttribute()
+    {
+        if ($this->isLocalStorage()) {
+            $extension = $this->extension;
+
+            return route('attachments.download', [
+                'id' => $this->uuid,
+                'name' => $extension ?
+                    Str::slug(substr($this->filename, 0, -1 * strlen($this->extension) - 1)) . '.' . $this->extension :
+                    Str::slug($this->filename),
+                'disposition' => 'inline',
+            ]);
+        } else {
+            return Storage::disk($this->disk)->url($this->filepath);
+        }
+    }
+
 
     public function toArray()
     {
