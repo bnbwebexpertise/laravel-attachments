@@ -19,19 +19,20 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @property int    model_id
  * @property string model_type
  * @property string disk
- * @property string filepath  the full path on storage disk
+ * @property string filepath     the full path on storage disk
  * @property string filename
  * @property string filetype
  * @property int    filesize
- * @property string key       must be unique across a model's attachments pool
- * @property string group     allows to group attachments
+ * @property string key          must be unique across a model's attachments pool
+ * @property string group        allows to group attachments
  * @property string title
  * @property string description
  * @property string preview_url
  * @property array  metadata
- * @property string extension the file extension (read-only mutator)
- * @property string path      the file directory (read-only mutator)
- * @property string url       the public URL (read-only mutator)
+ * @property string extension    the file extension (read-only mutator)
+ * @property string path         the file directory (read-only mutator)
+ * @property string url          the public URL (read-only mutator)
+ * @property string url_inline   the public URL with inline switch (read-only mutator)
  *
  * @package   Bnb\Laravel\Attachments
  */
@@ -191,7 +192,7 @@ class Attachment extends Model implements AttachmentContract
     /**
      * Register an outputting model event with the dispatcher.
      *
-     * @param  \Closure|string $callback
+     * @param \Closure|string $callback
      *
      * @return void
      */
@@ -282,6 +283,7 @@ class Attachment extends Model implements AttachmentContract
         }
     }
 
+
     public function getUrlInlineAttribute()
     {
         if ($this->isLocalStorage()) {
@@ -305,7 +307,8 @@ class Attachment extends Model implements AttachmentContract
         $attributes = parent::toArray();
 
         return array_merge($attributes, [
-            'url' => $this->url
+            'url' => $this->url,
+            'url_inline' => $this->url_inline,
         ]);
     }
 
@@ -584,6 +587,7 @@ class Attachment extends Model implements AttachmentContract
 
         return forward_static_call_array([$interface, $command], $args);
     }
+
 
     public function getConnectionName()
     {

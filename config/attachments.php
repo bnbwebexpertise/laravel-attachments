@@ -70,7 +70,7 @@ return [
     */
     'attributes' => ['title', 'description', 'key', 'disk', 'filepath', 'group'],
 
-    'dropzone_attributes' => ['uuid', 'url', 'filename', 'filetype', 'filesize', 'title', 'description', 'key', 'group'],
+    'dropzone_attributes' => ['uuid', 'url', 'url_inline', 'filename', 'filetype', 'filesize', 'title', 'description', 'key', 'group'],
 
     /*
     |--------------------------------------------------------------------------
