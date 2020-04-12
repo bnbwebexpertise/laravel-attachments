@@ -31,8 +31,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @property array  metadata
  * @property string extension    the file extension (read-only mutator)
  * @property string path         the file directory (read-only mutator)
- * @property string url          the public URL (read-only mutator)
- * @property string url_inline   the public URL with inline switch (read-only mutator)
+ * @property string url          the public URL from the storage (read-only mutator)
+ * @property string url_inline   the public URL from the storage with inline switch (read-only mutator)
+ * @property string proxy_url          the public URL using app as proxy (read-only mutator)
+ * @property string proxy_url_inline   the public URL using app as proxy with inline switch (read-only mutator)
  *
  * @package   Bnb\Laravel\Attachments
  */
@@ -270,14 +272,7 @@ class Attachment extends Model implements AttachmentContract
     public function getUrlAttribute()
     {
         if ($this->isLocalStorage()) {
-            $extension = $this->extension;
-
-            return route('attachments.download', [
-                'id' => $this->uuid,
-                'name' => $extension ?
-                    Str::slug(substr($this->filename, 0, -1 * strlen($this->extension) - 1)) . '.' . $this->extension :
-                    Str::slug($this->filename)
-            ]);
+            return $this->proxy_url;
         } else {
             return Storage::disk($this->disk)->url($this->filepath);
         }
@@ -287,18 +282,33 @@ class Attachment extends Model implements AttachmentContract
     public function getUrlInlineAttribute()
     {
         if ($this->isLocalStorage()) {
-            $extension = $this->extension;
-
-            return route('attachments.download', [
-                'id' => $this->uuid,
-                'name' => $extension ?
-                    Str::slug(substr($this->filename, 0, -1 * strlen($this->extension) - 1)) . '.' . $this->extension :
-                    Str::slug($this->filename),
-                'disposition' => 'inline',
-            ]);
+            return $this->proxy_url_line;
         } else {
             return Storage::disk($this->disk)->url($this->filepath);
         }
+    }
+
+
+    public function getProxyUrlAttribute()
+    {
+        return route('attachments.download', [
+            'id' => $this->uuid,
+            'name' => $this->extension ?
+                Str::slug(substr($this->filename, 0, -1 * strlen($this->extension) - 1)) . '.' . $this->extension :
+                Str::slug($this->filename)
+        ]);
+    }
+
+
+    public function getProxyUrlInlineAttribute()
+    {
+        return route('attachments.download', [
+            'id' => $this->uuid,
+            'name' => $this->extension ?
+                Str::slug(substr($this->filename, 0, -1 * strlen($this->extension) - 1)) . '.' . $this->extension :
+                Str::slug($this->filename),
+            'disposition' => 'inline',
+        ]);
     }
 
 
@@ -430,16 +440,18 @@ class Attachment extends Model implements AttachmentContract
      * Generate a temporary url at which the current file can be downloaded until $expire
      *
      * @param Carbon $expire
+     * @param bool $inline
      *
      * @return string
      */
-    public function getTemporaryUrl(Carbon $expire)
+    public function getTemporaryUrl(Carbon $expire, $inline = false)
     {
 
         $payload = Crypt::encryptString(collect([
             'id' => $this->uuid,
             'expire' => $expire->getTimestamp(),
-            'shared_at' => Carbon::now()->getTimestamp()
+            'shared_at' => Carbon::now()->getTimestamp(),
+            'disposition' => 'inline',
         ])->toJson());
 
         return route('attachments.download-shared', ['token' => $payload]);
