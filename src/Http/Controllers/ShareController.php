@@ -41,7 +41,9 @@ class ShareController extends Controller
             abort(403, Lang::get('attachments::messages.errors.expired'));
         }
 
-        $disposition = ($disposition = $request->input('disposition')) === 'inline' ? $disposition : 'attachment';
+        if (property_exists($data, 'disposition')) {
+            $disposition = $data->disposition === 'inline' ? $data->disposition : 'attachment';
+        }
 
         if ($file = $this->model->where('uuid', $id)->first()) {
             /** @var AttachmentContract $file */

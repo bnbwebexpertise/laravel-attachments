@@ -451,7 +451,7 @@ class Attachment extends Model implements AttachmentContract
             'id' => $this->uuid,
             'expire' => $expire->getTimestamp(),
             'shared_at' => Carbon::now()->getTimestamp(),
-            'disposition' => 'inline',
+            'disposition' => $inline ? 'inline' : 'attachment',
         ])->toJson());
 
         return route('attachments.download-shared', ['token' => $payload]);
