@@ -282,7 +282,7 @@ class Attachment extends Model implements AttachmentContract
     public function getUrlInlineAttribute()
     {
         if ($this->isLocalStorage()) {
-            return $this->proxy_url_line;
+            return $this->proxy_url_inline;
         } else {
             return Storage::disk($this->disk)->url($this->filepath);
         }
