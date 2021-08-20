@@ -322,6 +322,14 @@ A command is provided to cleanup the attachments not bound to a model
 The `-s` (or `--since=[timeInMinutes]`) option can be set to specify
  another time limit in minutes : only unbound files older than the
  specified age will be deleted. This value is set to **1440** by default.
+
+## Migrate command
+
+To migrate **all** attachments from one source disk to another :
+
+    php artisan attachments:migrate public s3
+
+Files are removed from source disk if successfully saved on the target disk.
  
 ## Customization
 

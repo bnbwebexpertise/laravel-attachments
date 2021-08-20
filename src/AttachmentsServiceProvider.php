@@ -3,6 +3,7 @@
 namespace Bnb\Laravel\Attachments;
 
 use Bnb\Laravel\Attachments\Console\Commands\CleanupAttachments;
+use Bnb\Laravel\Attachments\Console\Commands\MigrateAttachments;
 use Illuminate\Support\ServiceProvider;
 
 class AttachmentsServiceProvider extends ServiceProvider
@@ -31,6 +32,7 @@ class AttachmentsServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
             $this->commands([
                 CleanupAttachments::class,
+                MigrateAttachments::class,
             ]);
         }
     }
