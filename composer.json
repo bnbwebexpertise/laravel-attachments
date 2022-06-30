@@ -17,7 +17,7 @@
     "illuminate/console": ">=5.5",
     "illuminate/encryption": ">=5.5",
     "bnbwebexpertise/php-uuid": ">=0.0.2",
-    "doctrine/dbal": "~2.5",
+    "doctrine/dbal": "~2.5|^3.0",
     "nesbot/carbon": "^1.20 || ^2.0"
   },
   "require-dev": {
