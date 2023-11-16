@@ -397,7 +397,9 @@ class Attachment extends Model implements AttachmentContract
             ! FileHelper::makeDirectory($destinationPath, 0777, true, true) &&
             ! FileHelper::isDirectory($destinationPath)
         ) {
-            trigger_error(error_get_last()['message'], E_USER_WARNING);
+            $message = error_get_last()['message'] ?? sprintf('Unable to create directory: "%s"', $destinationPath);
+            
+            trigger_error($message, E_USER_WARNING);
         }
 
         return FileHelper::copy($sourcePath, $destinationPath . basename($filePath));
