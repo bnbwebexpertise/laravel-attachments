@@ -44,6 +44,7 @@ class CleanupAttachments extends Command
     {
         if ($this->confirm(Lang::get('attachments::messages.console.cleanup_confirm'))) {
             $query = $this->model
+                ->withTrashed()
                 ->whereNull('model_type')
                 ->whereNull('model_id')
                 ->where('updated_at', '<=', Carbon::now()->addMinutes(-1 * $this->option('since')));
@@ -55,7 +56,7 @@ class CleanupAttachments extends Command
                     /** @var Collection $attachments */
                     $attachments->each(function ($attachment) use ($progress) {
                         /** @var AttachmentContract $attachment */
-                        $attachment->delete();
+                        $attachment->forceDelete();
 
                         $progress->advance();
                     });

@@ -74,7 +74,7 @@ class DropzoneController extends Controller
                     return response(Lang::get('attachments::messages.errors.delete_denied'), 403);
                 }
 
-                $file->delete();
+                $file->forceDelete();
             }
 
             return response('', 204);

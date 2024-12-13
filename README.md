@@ -124,7 +124,7 @@ Calling the `delete()` method on an attachment model instance will
  be disabled by setting the `behaviors.cascade_delete` to `false` in
  the configuration.
 
-> Not that calling `delete()` on a `query()` like statement will not
+> Note that calling `delete()` on a `query()` like statement will not
  cascade to the filesystem because it will not call the `delete()`
  method of the `Attachment` model class.
 
@@ -133,6 +133,15 @@ $user = App\User::first();
 $attachmentByKey = $user->attachment('myKey');
 $attachmentByKey->delete(); // Will also delete the file on the storage by default
 ```
+
+### Soft Deletes
+The package also supports the Laravel's SoftDeletes trait (disabled by default).
+ It can be enabled by setting the `behaviors.soft_delete` to `true` in
+ the configuration.
+
+> Note that `behaviors.cascade_delete` setting will then work only with
+ the `forceDelete()` method of the `Attachment` model class.
+ All the files will be kept while the record is soft-deleted
 
 
 ## Hooking the file output

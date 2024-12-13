@@ -56,6 +56,7 @@ return [
     */
     'behaviors' => [
         'cascade_delete' => env('ATTACHMENTS_CASCADE_DELETE', true),
+        'soft_delete' => env('ATTACHMENTS_SOFT_DELETE', false),
         'dropzone_check_csrf' => env('ATTACHMENTS_DROPZONE_CHECK_CSRF', true),
     ],
 
