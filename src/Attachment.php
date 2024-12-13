@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Crypt;
 use File as FileHelper;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Storage;
@@ -40,6 +41,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class Attachment extends Model implements AttachmentContract
 {
+    use SoftDeletes;
 
     protected $table = 'attachments';
 
@@ -87,7 +89,7 @@ class Attachment extends Model implements AttachmentContract
         $attachment->fill($options);
 
         if ($found = $model->attachments()->where('key', '=', $attachment->key)->first()) {
-            $found->delete();
+            $found->forceDelete();
         }
 
         return $attachment->model()->associate($model)->save() ? $attachment : null;
@@ -211,8 +213,16 @@ class Attachment extends Model implements AttachmentContract
     {
         parent::boot();
 
+        if (!config('attachments.behaviors.soft_delete', false)) {
+            static::deleted(function ($attachment) {
+                /** @var Attachment $attachment */
+
+                $attachment->forceDelete();
+            });
+        }
+
         if (config('attachments.behaviors.cascade_delete')) {
-            static::deleting(function ($attachment) {
+            static::forceDeleting(function ($attachment) {
                 /** @var Attachment $attachment */
 
                 $attachment->deleteFile();

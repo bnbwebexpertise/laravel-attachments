@@ -78,7 +78,7 @@ class MigrateAttachments extends Command
             $this->error(Lang::get('attachments::messages.console.migrate_invalid_to'));
         }
 
-        $query = Attachment::query()
+        $query = Attachment::withTrashed()
             ->where('disk', '=', $this->argument('from'));
 
         $this
